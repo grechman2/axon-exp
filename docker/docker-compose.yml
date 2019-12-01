@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  axon-server:
+    image: axoniq/axonserver
+    container_name: axonserver
+    healthcheck:
+      test: "curl -f 'http://localhost:8024/actuator/health'"
+    ports:
+      - 8024:8024
+      - 8124:8124
