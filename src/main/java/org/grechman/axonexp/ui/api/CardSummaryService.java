@@ -25,7 +25,7 @@ public class CardSummaryService {
     private SubscriptionQueryResult<Integer, CountChangedUpdate> countQueryResult;
     private CardSummaryFilter filter = new CardSummaryFilter("");
 
-    public Mono<List<CardSummary>> getCartSummaries(int offSet, int limit, CardSummaryFilter filter) {
+    public Flux<CardSummary> getCartSummaries(int offSet, int limit, CardSummaryFilter filter) {
         FetchCardSummariesQuery fetchCardSummariesQuery =
                 new FetchCardSummariesQuery(offSet, limit, filter);
 
@@ -58,7 +58,7 @@ public class CardSummaryService {
         /*
          * Returning the initial result.
          */
-        return fetchQueryResult.initialResult();
+        return fetchQueryResult.updates();
     }
 
 }

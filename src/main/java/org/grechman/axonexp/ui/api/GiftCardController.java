@@ -6,6 +6,7 @@ import org.grechman.axonexp.commands.RedeemCommand;
 import org.grechman.axonexp.query.CardSummary;
 import org.grechman.axonexp.query.CardSummaryFilter;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -35,9 +36,18 @@ public class GiftCardController {
     }
 
     @GetMapping("/")
-    public Mono<List<CardSummary>> getCardSummaryResult(
-            @RequestParam("idStartsWith") String idStartsWith) {
-        return cardSummaryService.getCartSummaries(0, 0, new CardSummaryFilter(idStartsWith));
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Flux<CardSummary> getCardSummaryResult() {
+        return cardSummaryService.getCartSummaries(0, 0, new CardSummaryFilter("test"));
+//                return Flux
+//                .range(0, 10000)
+//                .map( index -> CardSummary
+//                        .builder()
+//                        .id("id"+index)
+//                        .initialBalance(index)
+//                        .remainingBalance(index)
+//                        .build());
+
     }
 
 

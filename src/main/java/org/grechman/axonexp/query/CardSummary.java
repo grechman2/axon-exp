@@ -22,6 +22,7 @@ import javax.persistence.NamedQuery;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 public class CardSummary {
 
     @EqualsAndHashCode.Include
