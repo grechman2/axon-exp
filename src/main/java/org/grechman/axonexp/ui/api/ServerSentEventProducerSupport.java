@@ -21,7 +21,7 @@ public interface ServerSentEventProducerSupport {
      *
      * @param queryResult subscription query results
      * @param seconds     heartbeat period; the length of the interval duration with which "ping" events are emitted.
-     * @param <T>         the query model type.
+     * @param <T>         the query model.ts type.
      * @return flux of server sent events
      */
     default <T> Flux<ServerSentEvent<?>> toSSEFlux(
@@ -65,8 +65,10 @@ public interface ServerSentEventProducerSupport {
             queryResult.initialResult()
                     .doOnError(error -> logger().warn("Initial result error", error))
                     .doFinally(signalType -> logger().debug("Initial result finalized; signalType: {}"))
-                    .flatMapMany(Flux::fromIterable)
-                    .subscribe(items -> ((List<T>) items).forEach(emitter::next));
+                    .subscribe(items ->{
+                                System.out.println(items);
+                                ((List<T>) items).forEach(emitter::next);
+                                    });
 
             queryResult.updates().buffer(Duration.ofMillis(500))
                     .map(modelList -> modelList.get(modelList.size() - 1))

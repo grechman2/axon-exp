@@ -11,15 +11,12 @@ import org.grechman.axonexp.query.CardSummary;
 import org.grechman.axonexp.query.CardSummaryFilter;
 import org.grechman.axonexp.query.FetchCardSummariesQuery;
 import org.slf4j.Logger;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -39,6 +36,17 @@ public class GiftCardController implements ServerSentEventProducerSupport {
         this.queryGateway = queryGateway;
     }
 
+    static SubscriptionQueryResult<List<CardSummary>, CardSummary> subscriptionQueryResult(
+            QueryGateway queryGateway, String idStartsWith
+    ) {
+
+        SubscriptionQueryResult<List<CardSummary>, CardSummary> queryResult = queryGateway
+                .subscriptionQuery(
+                        new FetchCardSummariesQuery(0, 1000, new CardSummaryFilter(idStartsWith)),
+                        ResponseTypes.multipleInstancesOf(CardSummary.class),
+                        ResponseTypes.instanceOf(CardSummary.class));
+        return queryResult;
+    }
 
     @PostMapping(Api.GiftCard.ISSUE_GIFT_CARD)
     public void issueGiftCard(@RequestBody IssueCommand command) {
@@ -50,36 +58,10 @@ public class GiftCardController implements ServerSentEventProducerSupport {
         commandGateway.sendAndWait(new RedeemCommand(id, amount));
     }
 
-//    @GetMapping(value = "/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//    @CrossOrigin(origins = "http://localhost:4200")
-//    public Flux<CardSummary> getEvents(
-//            @RequestParam("idStartsWith") String idStartsWith,
-//            HttpServletResponse response) {
-//        // return toSSEFluxForInitialCollection(response, subscriptionQueryResult(queryGateway, idStartsWith));
-//
-//
-//    }
-
-    @GetMapping(value = "/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
-    public Flux<ServerSentEvent<CardSummary>> getCardSummaryResult(
-            @RequestParam("idStartsWith") String idStartsWith,
-            HttpServletResponse response) {
-        return toSSEFluxForInitialCollection(response, subscriptionQueryResult(queryGateway, idStartsWith));
-
-
-    }
-
-    static SubscriptionQueryResult<List<CardSummary>, CardSummary> subscriptionQueryResult(
-            QueryGateway queryGateway, String idStartsWith
-    ) {
-
-        SubscriptionQueryResult<List<CardSummary>, CardSummary> queryResult = queryGateway
-                .subscriptionQuery(
-                        new FetchCardSummariesQuery(0,0, new CardSummaryFilter(idStartsWith)),
-                        ResponseTypes.multipleInstancesOf(CardSummary.class),
-                        ResponseTypes.instanceOf(CardSummary.class));
-        return queryResult;
+    public List<CardSummary> getCardSummaryResult() {
+        return cardSummaryService.getCartSummaries(0,100000, new CardSummaryFilter(""));
     }
 
     @Override

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {GiftCardsService} from "../shared/gift-cards/gift-cards.service";
+import {Observable} from 'rxjs/Rx'
+import {GiftCardSummary} from "../shared/model/GiftCardSummary";
+import {StompService} from "@stomp/ng2-stompjs";
 
 @Component({
   selector: 'app-gift-cards-list',
@@ -7,14 +10,19 @@ import {GiftCardsService} from "../shared/gift-cards/gift-cards.service";
   styleUrls: ['./gift-cards-list.component.css']
 })
 export class GiftCardsListComponent implements OnInit {
-  giftCards: Array<any>;
+  giftCards$: Observable<GiftCardSummary[]>;
 
-  constructor(private giftCardService: GiftCardsService) { }
+  constructor(private giftCardService: GiftCardsService, private stompService: StompService) { }
 
   ngOnInit() {
-    this.giftCardService.getAll().subscribe(data => {
-       this.giftCards = data;
-    })
+    const dataChanges = [
+      this.stompService.subscribe("/topic/cardsummary.updates")
+    ];
+
+    this.giftCards$ = Observable
+      .merge(...dataChanges)
+      .startWith(null)
+      .switchMap(event => this.giftCardService.getAll())
   }
 
 }
