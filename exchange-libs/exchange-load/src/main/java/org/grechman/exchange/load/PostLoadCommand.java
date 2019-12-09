@@ -1,17 +1,22 @@
 package org.grechman.exchange.load;
 
+import lombok.Data;
 import lombok.Value;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 
-@Value
+@Data
 public class PostLoadCommand extends AbstractLoadCommand {
+    private PostLoadDetails postLoadDetails = null;
 
-    private PostLoadDetails postLoadDetails;
+    public PostLoadCommand() {
+        super(new Load.LoadId());
+    }
 
-    public PostLoadCommand(PostLoadDetails postLoadDetails) {
+    public PostLoadCommand(PostLoadDetails postLoadDetails){
+        super(new Load.LoadId());
         this.postLoadDetails = postLoadDetails;
     }
 

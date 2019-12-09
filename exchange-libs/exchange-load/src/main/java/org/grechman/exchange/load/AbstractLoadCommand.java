@@ -1,7 +1,13 @@
 package org.grechman.exchange.load;
 
-import org.grechman.exchange.load.Load;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 public class AbstractLoadCommand {
-    Load.LoadId aggregateIdentifier;
+
+    @TargetAggregateIdentifier
+    Load.LoadId loadId;
+
+    public AbstractLoadCommand(Load.LoadId loadId) {
+        this.loadId = loadId;
+    }
 }

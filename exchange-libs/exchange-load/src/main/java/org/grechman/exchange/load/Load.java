@@ -35,16 +35,16 @@ class Load {
      * any other registered 'Event Listeners', who may take further action.
      */
     @CommandHandler
-    public Load(PostLoadCommand postLoadCommand) {
-        verifyInitialLoadPost(postLoadCommand);
+    public Load(PostLoadCommand command) {
+        verifyInitialLoadPost(command);
         apply(LoadPostedEvent.builder()
                 .loadInfo(LoadInfo
                         .builder()
-                        .from(postLoadCommand.getPostLoadDetails().getFrom())
-                        .to(postLoadCommand.getPostLoadDetails().getTo())
-                        .owner(postLoadCommand.getPostLoadDetails().getOwner())
-                        .shouldBeDeliveredOn(postLoadCommand.getPostLoadDetails().getShouldBeDeliveredOn())
-                        .price(postLoadCommand.getPostLoadDetails().getPrice())
+                        .from(command.getPostLoadDetails().getFrom())
+                        .to(command.getPostLoadDetails().getTo())
+                        .owner(command.getPostLoadDetails().getOwner())
+                        .shouldBeDeliveredOn(command.getPostLoadDetails().getShouldBeDeliveredOn())
+                        .price(command.getPostLoadDetails().getPrice())
                         .build())
                 .build());
     }
