@@ -2,11 +2,14 @@ package exchange.load;
 
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.grechman.exchange.load.LoadValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,8 +18,11 @@ import java.util.UUID;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
-@Aggregate
-class Load {
+@Aggregate()
+@RequiredArgsConstructor
+public class Load {
+
+    private LoadValidator loadValidator;
 
     @AggregateIdentifier
     private LoadId loadId;
@@ -26,9 +32,6 @@ class Load {
     private Date shouldBeDeliveredOn;
     private String owner;
     private Order order;
-
-    public Load() {
-    }
 
     /**
      * This constructor is marked as a 'CommandHandler' for the [PostLoadCommand].
@@ -44,6 +47,7 @@ class Load {
                 .aggregateIdentifier(command.loadId)
                 .loadInfo(LoadInfo
                         .builder()
+                        .loadStatus(LoadStatus.POSTED)
                         .from(command.getPostLoadDetails().getFrom())
                         .to(command.getPostLoadDetails().getTo())
                         .owner(command.getPostLoadDetails().getOwner())
@@ -59,7 +63,7 @@ class Load {
         this.loadId = loadPostedEvent.getAggregateIdentifier();
         this.from = loadPostedEvent.getLoadInfo().getFrom();
         this.to = loadPostedEvent.getLoadInfo().getTo();
-        this.loadStatus = LoadStatus.POSTED;
+        this.loadStatus = loadPostedEvent.getLoadInfo().getLoadStatus();
         this.owner = loadPostedEvent.getLoadInfo().getOwner();
         this.shouldBeDeliveredOn = loadPostedEvent.getLoadInfo().getShouldBeDeliveredOn();
         this.order = Order
@@ -69,8 +73,7 @@ class Load {
     }
 
     private void verifyInitialLoadPost(PostLoadCommand postLoadCommand) {
-
-
+        loadValidator.verifyOwnerHasNoPostedLoadsYet(postLoadCommand.getPostLoadDetails().getOwner());
         Objects.requireNonNull(postLoadCommand.getPostLoadDetails().getFrom(),
                 "Load should have departure address (From)");
         Objects.requireNonNull(postLoadCommand.getPostLoadDetails().getTo(),
@@ -88,7 +91,7 @@ class Load {
         private Date completionDate;
     }
 
-    static class LoadId {
+    public static class LoadId{
         private String id;
 
         public LoadId(String id) {
