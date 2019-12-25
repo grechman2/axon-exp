@@ -8,3 +8,9 @@ services:
     ports:
       - 8024:8024
       - 8124:8124
+  redis:
+    image: sameersbn/redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /srv/docker/redis:/var/lib/redis

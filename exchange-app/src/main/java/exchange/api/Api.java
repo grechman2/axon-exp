@@ -1,4 +1,4 @@
-package axonexp.exchange.api;
+package exchange.api;
 
 public class Api {
     private static final String BASE = "/api";

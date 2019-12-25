@@ -1,5 +1,6 @@
 package exchange.load;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
@@ -9,24 +10,27 @@ import java.util.Date;
 
 @Data
 public class PostLoadCommand extends AbstractLoadCommand {
-    private PostLoadDetails postLoadDetails = null;
+
+    private String owner;
+    private String from;
+    private String to;
+    private Date shouldBeDeliveredOn;
+    private BigDecimal price;
 
     public PostLoadCommand() {
         super(new Load.LoadId());
     }
 
-    public PostLoadCommand(PostLoadDetails postLoadDetails){
+    public PostLoadCommand(String owner,
+                           String from,
+                           String to,
+                           Date shouldBeDeliveredOn,
+                           BigDecimal price) {
         super(new Load.LoadId());
-        this.postLoadDetails = postLoadDetails;
+        this.owner = owner;
+        this.from = from;
+        this.to = to;
+        this.shouldBeDeliveredOn = shouldBeDeliveredOn;
+        this.price = price;
     }
-
-    @Value
-    public static class PostLoadDetails{
-        private String owner;
-        private String from;
-        private String to;
-        private Date shouldBeDeliveredOn;
-        private BigDecimal price;
-    }
-
 }

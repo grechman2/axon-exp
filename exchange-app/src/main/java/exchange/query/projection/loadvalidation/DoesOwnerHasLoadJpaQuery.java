@@ -1,10 +1,10 @@
-package axonexp.exchange.query.projection;
+package exchange.query.projection.loadvalidation;
 
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public class DoesOwnerHasLoadQuery {
+public class DoesOwnerHasLoadJpaQuery {
     private String owner;
 }

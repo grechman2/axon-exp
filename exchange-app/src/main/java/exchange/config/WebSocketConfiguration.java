@@ -1,4 +1,4 @@
-package axonexp.exchange.config;
+package exchange.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;

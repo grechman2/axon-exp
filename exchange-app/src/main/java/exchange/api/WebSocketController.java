@@ -1,4 +1,4 @@
-package axonexp.exchange.api;
+package exchange.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

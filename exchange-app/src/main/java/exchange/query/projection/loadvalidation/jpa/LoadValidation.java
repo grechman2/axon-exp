@@ -1,4 +1,4 @@
-package axonexp.exchange.query.projection;
+package exchange.query.projection.loadvalidation.jpa;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,6 @@ import javax.persistence.Id;
 public class LoadValidation {
 
     @Id
-    private Integer id;
     private String loadId;
     private String owner;
     private String loadStatus;

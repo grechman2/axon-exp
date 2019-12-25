@@ -1,4 +1,4 @@
-package exchange.load;
+package exchange.validator;
 
 public interface LoadValidator {
 

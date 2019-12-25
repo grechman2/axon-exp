@@ -20,8 +20,6 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 @RequiredArgsConstructor
 public class Load {
 
-    private LoadValidator loadValidator;
-
     @AggregateIdentifier
     private LoadId loadId;
     private LoadStatus loadStatus;
@@ -46,11 +44,11 @@ public class Load {
                 .loadInfo(LoadInfo
                         .builder()
                         .loadStatus(LoadStatus.POSTED)
-                        .from(command.getPostLoadDetails().getFrom())
-                        .to(command.getPostLoadDetails().getTo())
-                        .owner(command.getPostLoadDetails().getOwner())
-                        .shouldBeDeliveredOn(command.getPostLoadDetails().getShouldBeDeliveredOn())
-                        .price(command.getPostLoadDetails().getPrice())
+                        .from(command.getFrom())
+                        .to(command.getTo())
+                        .owner(command.getOwner())
+                        .shouldBeDeliveredOn(command.getShouldBeDeliveredOn())
+                        .price(command.getPrice())
                         .build())
                 .build());
     }
@@ -71,10 +69,9 @@ public class Load {
     }
 
     private void verifyInitialLoadPost(PostLoadCommand postLoadCommand) {
-        loadValidator.verifyOwnerHasNoPostedLoadsYet(postLoadCommand.getPostLoadDetails().getOwner());
-        Objects.requireNonNull(postLoadCommand.getPostLoadDetails().getFrom(),
+        Objects.requireNonNull(postLoadCommand.getFrom(),
                 "Load should have departure address (From)");
-        Objects.requireNonNull(postLoadCommand.getPostLoadDetails().getTo(),
+        Objects.requireNonNull(postLoadCommand.getTo(),
                 "Load should have destination address (To)");
     }
 
@@ -89,7 +86,7 @@ public class Load {
         private Date completionDate;
     }
 
-    public static class LoadId{
+    public static class LoadId {
         private String id;
 
         public LoadId(String id) {

@@ -1,4 +1,4 @@
-package exchange.load;
+package exchange.validator;
 
 import lombok.Value;
 

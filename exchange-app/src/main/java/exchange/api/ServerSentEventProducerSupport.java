@@ -1,4 +1,4 @@
-package axonexp.exchange.api;
+package exchange.api;
 
 import org.axonframework.queryhandling.SubscriptionQueryResult;
 import org.slf4j.Logger;

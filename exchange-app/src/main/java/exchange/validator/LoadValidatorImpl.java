@@ -1,9 +1,9 @@
-package axonexp.exchange.commands;
+package exchange.validator;
 
-import axonexp.exchange.query.projection.DoesOwnerHasLoadQuery;
+import exchange.query.projection.loadvalidation.DoesOwnerHasLoadJpaQuery;
+import exchange.query.projection.loadvalidation.DoesOwnerHasLoadRedisQuery;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.queryhandling.QueryGateway;
-import exchange.load.LoadValidator;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -19,7 +19,7 @@ public class LoadValidatorImpl implements LoadValidator {
     @Override
     public void verifyOwnerHasNoPostedLoadsYet(String owner) {
         CompletableFuture<Boolean> resp =
-                queryGateway.query(DoesOwnerHasLoadQuery.builder().owner(owner).build(), Boolean.class);
+                queryGateway.query(DoesOwnerHasLoadRedisQuery.builder().owner(owner).build(), Boolean.class);
         try {
             if(resp.get()) {
                 throw new ValidationException("Owner not allowed to post more than one load");

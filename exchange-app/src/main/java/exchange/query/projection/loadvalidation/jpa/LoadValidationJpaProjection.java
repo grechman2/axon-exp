@@ -1,6 +1,7 @@
-package axonexp.exchange.query.projection;
+package exchange.query.projection.loadvalidation.jpa;
 
 import exchange.load.LoadPostedEvent;
+import exchange.query.projection.loadvalidation.DoesOwnerHasLoadJpaQuery;
 import lombok.AllArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -32,7 +33,7 @@ public class LoadValidationJpaProjection {
     };
 
     @QueryHandler
-    public Boolean doesOwnerHasLoad(DoesOwnerHasLoadQuery query){
+    public Boolean doesOwnerHasLoad(DoesOwnerHasLoadJpaQuery query){
             TypedQuery<Integer> q = entityManager.createQuery("SELECT COUNT(l) from LoadValidation l WHERE l.owner = :owner", Integer.class);
             q.setParameter("owner", query.getOwner());
             return q.getSingleResult().intValue() > 1;
