@@ -1,7 +1,7 @@
 package exchange.query.projection.loadvalidation.redis;
 
-import exchange.load.LoadPostedEvent;
-import exchange.query.projection.loadvalidation.DoesOwnerHasLoadJpaQuery;
+import exchange.load.events.LoadPostedEvent;
+import exchange.query.projection.loadvalidation.DoesOwnerHasLoadRedisQuery;
 import lombok.AllArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -25,7 +25,7 @@ public class OwnerHasOneLoadRedisProjection {
     }
 
     @QueryHandler
-    public Boolean doesOwnerHasLoad(DoesOwnerHasLoadJpaQuery query) {
+    public Boolean doesOwnerHasLoad(DoesOwnerHasLoadRedisQuery query) {
         return redisRepository.findById(query.getOwner()).isPresent();
     }
 }

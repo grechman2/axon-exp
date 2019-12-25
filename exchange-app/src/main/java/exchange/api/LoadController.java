@@ -1,10 +1,10 @@
 package exchange.api;
 
+import exchange.dto.ChangeLoadDestinationDto;
 import exchange.dto.PostLoadDto;
 import exchange.service.LoadService;
 import lombok.RequiredArgsConstructor;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import exchange.load.PostLoadCommand;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,4 +20,12 @@ public class LoadController {
     public void postLoad(@RequestBody PostLoadDto dto) {
         loadService.postLoad(dto);
     }
+
+    @PostMapping(Api.Load.CHANGE_LOAD_DESTINATION)
+    public void postLoad(
+            @PathVariable("id") String loadId,
+            @RequestBody ChangeLoadDestinationDto dto) {
+        loadService.changeLoadDestination(loadId, dto);
+    }
+
 }

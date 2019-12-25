@@ -1,8 +1,8 @@
-package exchange.load;
+package exchange.load.commands;
 
-import lombok.Builder;
+import exchange.load.Load;
+import exchange.load.commands.AbstractLoadCommand;
 import lombok.Data;
-import lombok.Value;
 
 import java.math.BigDecimal;
 import java.util.Date;

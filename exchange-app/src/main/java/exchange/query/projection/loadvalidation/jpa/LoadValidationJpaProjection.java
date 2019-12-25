@@ -1,11 +1,10 @@
 package exchange.query.projection.loadvalidation.jpa;
 
-import exchange.load.LoadPostedEvent;
+import exchange.load.events.LoadPostedEvent;
 import exchange.query.projection.loadvalidation.DoesOwnerHasLoadJpaQuery;
 import lombok.AllArgsConstructor;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,8 @@ import javax.persistence.TypedQuery;
 
 @Service
 @AllArgsConstructor
-@ProcessingGroup("loadValidationProjection")
+@ProcessingGroup("loadValidationProjection2")
 public class LoadValidationJpaProjection {
-
-    private final QueryGateway queryGateway;
 
     @Persistent
     EntityManager entityManager;

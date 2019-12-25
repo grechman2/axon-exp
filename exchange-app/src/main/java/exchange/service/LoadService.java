@@ -1,7 +1,9 @@
 package exchange.service;
 
+import exchange.dto.ChangeLoadDestinationDto;
 import exchange.dto.PostLoadDto;
-import exchange.load.PostLoadCommand;
+import exchange.load.commands.ChangeLoadDestinationCommand;
+import exchange.load.commands.PostLoadCommand;
 import exchange.validator.LoadValidator;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -24,6 +26,11 @@ public class LoadService {
                 dto.getPrice()));
     }
 
+    public void changeLoadDestination(String loadId, ChangeLoadDestinationDto dto){
+        commandGateway.sendAndWait(new ChangeLoadDestinationCommand(
+                loadId,
+                dto.getTo()));
+    }
 
 
 }

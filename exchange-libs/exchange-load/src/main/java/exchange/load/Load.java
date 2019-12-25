@@ -1,6 +1,10 @@
 package exchange.load;
 
 
+import exchange.load.commands.ChangeLoadDestinationCommand;
+import exchange.load.commands.PostLoadCommand;
+import exchange.load.events.LoadDestinationChangedEvent;
+import exchange.load.events.LoadPostedEvent;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -9,6 +13,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +22,6 @@ import java.util.UUID;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate()
-@RequiredArgsConstructor
 public class Load {
 
     @AggregateIdentifier
@@ -41,7 +45,7 @@ public class Load {
         verifyInitialLoadPost(command);
         apply(LoadPostedEvent.builder()
                 .aggregateIdentifier(command.loadId)
-                .loadInfo(LoadInfo
+                .loadInfo(LoadInfo2
                         .builder()
                         .loadStatus(LoadStatus.POSTED)
                         .from(command.getFrom())
@@ -51,6 +55,21 @@ public class Load {
                         .price(command.getPrice())
                         .build())
                 .build());
+    }
+
+    public Load() {
+    }
+
+    @CommandHandler
+    public void changeLoadDestination(ChangeLoadDestinationCommand command){
+        verifyChangeLoadDestination(command);
+        apply(new LoadDestinationChangedEvent(command.getLoadId(), command.getTo()));
+    }
+
+    private void verifyChangeLoadDestination(ChangeLoadDestinationCommand command) {
+        if(!LoadStatus.POSTED.equals(this.loadStatus)){
+            throw new ValidationException("You can't change destination for load not in POSTED status!");
+        }
     }
 
 
@@ -68,13 +87,17 @@ public class Load {
                 .build();
     }
 
+    @EventSourcingHandler
+    public void on(LoadDestinationChangedEvent event){
+        this.to = event.getNewDestination();
+    }
+
     private void verifyInitialLoadPost(PostLoadCommand postLoadCommand) {
         Objects.requireNonNull(postLoadCommand.getFrom(),
                 "Load should have departure address (From)");
         Objects.requireNonNull(postLoadCommand.getTo(),
                 "Load should have destination address (To)");
     }
-
 
     @Value
     @Builder

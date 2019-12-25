@@ -12,6 +12,7 @@ public class Api {
 
     public static class Load{
         public static final String BASE_LOADS = BASE + "/loads";
+        public static final String CHANGE_LOAD_DESTINATION = BASE_LOADS + "/{id}/change-destination";
 
     }
 }

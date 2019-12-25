@@ -1,5 +1,6 @@
-package exchange.load;
+package exchange.load.events;
 
+import exchange.load.Load;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
