@@ -8,6 +8,8 @@ import {HttpClientModule} from "@angular/common/http";
 import { GiftCardsListComponent } from './gift-cards-list/gift-cards-list.component';
 import {StompConfig, StompService} from "@stomp/ng2-stompjs";
 import {environment} from "../environments/environment";
+import { PostLoadComponent } from './post-load/post-load.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const stompConfig: StompConfig = {
   // Which server?
@@ -36,13 +38,15 @@ const stompConfig: StompConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    GiftCardsListComponent
+    GiftCardsListComponent,
+    PostLoadComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     StompService,
