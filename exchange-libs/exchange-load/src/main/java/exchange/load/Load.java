@@ -6,7 +6,6 @@ import exchange.load.commands.PostLoadCommand;
 import exchange.load.events.LoadDestinationChangedEvent;
 import exchange.load.events.LoadPostedEvent;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -14,11 +13,9 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import javax.validation.ValidationException;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -92,7 +89,7 @@ public class Load {
 
     @EventSourcingHandler
     public void on(LoadDestinationChangedEvent event){
-        this.to = event.getNewDestination();
+        this.to = event.getTo();
     }
 
     private void verifyInitialLoadPost(PostLoadCommand postLoadCommand) {

@@ -5,12 +5,12 @@ import lombok.Getter;
 import org.axonframework.serialization.Revision;
 
 @Getter
-@Revision("1")
+@Revision("2")
 public class LoadDestinationChangedEvent extends AbstractLoadEvent {
-    private String newDestination;
+    private String to;
 
-    public LoadDestinationChangedEvent(LoadId aggregateIdentifier, String newDestination) {
+    public LoadDestinationChangedEvent(LoadId aggregateIdentifier, String to) {
         super(aggregateIdentifier);
-        this.newDestination = newDestination;
+        this.to = to;
     }
 }
