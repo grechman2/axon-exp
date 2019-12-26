@@ -1,16 +1,16 @@
 package exchange.load.events;
 
-import exchange.load.Load;
+import exchange.load.LoadId;
 import lombok.Getter;
 import org.axonframework.serialization.Revision;
 
 @Getter
 @Revision("1")
-public class LoadDestinationChangedEvent extends AbstractLoadEvent{
+public class LoadDestinationChangedEvent extends AbstractLoadEvent {
     private String newDestination;
 
-    public LoadDestinationChangedEvent(Load.LoadId aggregateIdentifier, String newDestination) {
+    public LoadDestinationChangedEvent(LoadId aggregateIdentifier, String newDestination) {
         super(aggregateIdentifier);
-        newDestination = newDestination;
+        this.newDestination = newDestination;
     }
 }

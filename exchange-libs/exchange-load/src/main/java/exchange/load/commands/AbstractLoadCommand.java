@@ -1,23 +1,23 @@
 package exchange.load.commands;
 
-import exchange.load.Load;
+import exchange.load.LoadId;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 public class AbstractLoadCommand {
 
     @TargetAggregateIdentifier
-    public Load.LoadId loadId;
+    public LoadId loadId;
 
-    public Load.LoadId getLoadId() {
+    public LoadId getLoadId() {
         return loadId;
     }
 
-    public AbstractLoadCommand setLoadId(Load.LoadId loadId) {
+    public AbstractLoadCommand setLoadId(LoadId loadId) {
         this.loadId = loadId;
         return this;
     }
 
-    public AbstractLoadCommand(Load.LoadId loadId) {
+    public AbstractLoadCommand(LoadId loadId) {
         this.loadId = loadId;
     }
 }

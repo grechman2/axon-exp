@@ -1,10 +1,7 @@
 package exchange.load.commands;
 
-import exchange.load.Load;
+import exchange.load.LoadId;
 import lombok.Data;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 
 @Data
@@ -13,11 +10,11 @@ public class ChangeLoadDestinationCommand extends AbstractLoadCommand {
     private String to;
 
     public ChangeLoadDestinationCommand() {
-        super(new Load.LoadId());
+        super(new LoadId());
     }
 
     public ChangeLoadDestinationCommand(String loadId, String to) {
-        super(new Load.LoadId(loadId));
+        super(new LoadId(loadId));
         this.to = to;
     }
 }

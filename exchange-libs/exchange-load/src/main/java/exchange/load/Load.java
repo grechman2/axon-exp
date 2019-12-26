@@ -14,6 +14,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import javax.validation.ValidationException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -32,6 +33,8 @@ public class Load {
     private Date shouldBeDeliveredOn;
     private String owner;
     private Order order;
+
+
 
     /**
      * This constructor is marked as a 'CommandHandler' for the [PostLoadCommand].
@@ -109,22 +112,5 @@ public class Load {
         private Date completionDate;
     }
 
-    public static class LoadId {
-        private String id;
 
-        public LoadId(String id) {
-            this.id = id;
-        }
-
-        public LoadId() {
-        }
-
-        @Override
-        public String toString() {
-            if (Objects.isNull(id)) {
-                return UUID.randomUUID().toString();
-            }
-            return id;
-        }
-    }
 }

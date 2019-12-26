@@ -1,7 +1,6 @@
 package exchange.load.commands;
 
-import exchange.load.Load;
-import exchange.load.commands.AbstractLoadCommand;
+import exchange.load.LoadId;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,7 +17,7 @@ public class PostLoadCommand extends AbstractLoadCommand {
     private BigDecimal price;
 
     public PostLoadCommand() {
-        super(new Load.LoadId());
+        super(new LoadId());
     }
 
     public PostLoadCommand(String owner,
@@ -26,7 +25,7 @@ public class PostLoadCommand extends AbstractLoadCommand {
                            String to,
                            Date shouldBeDeliveredOn,
                            BigDecimal price) {
-        super(new Load.LoadId());
+        super(new LoadId());
         this.owner = owner;
         this.from = from;
         this.to = to;

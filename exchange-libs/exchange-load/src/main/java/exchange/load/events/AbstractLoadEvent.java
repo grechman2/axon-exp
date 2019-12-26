@@ -1,12 +1,13 @@
 package exchange.load.events;
 
-import exchange.load.Load;
+import exchange.load.LoadId;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+
+import java.io.Serializable;
 
 @AllArgsConstructor
 @Getter
-public abstract class AbstractLoadEvent {
-    private Load.LoadId aggregateIdentifier;
+public abstract class AbstractLoadEvent implements Serializable{
+    protected LoadId aggregateIdentifier;
 }

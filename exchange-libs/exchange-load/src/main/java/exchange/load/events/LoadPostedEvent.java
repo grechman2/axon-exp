@@ -1,6 +1,7 @@
 package exchange.load.events;
 
 import exchange.load.Load;
+import exchange.load.LoadId;
 import exchange.load.LoadInfo2;
 import exchange.load.events.AbstractLoadEvent;
 import lombok.Builder;
@@ -13,7 +14,7 @@ public class LoadPostedEvent extends AbstractLoadEvent {
     private LoadInfo2 loadInfo;
 
     @Builder
-    public LoadPostedEvent(Load.LoadId aggregateIdentifier, LoadInfo2 loadInfo) {
+    public LoadPostedEvent(LoadId aggregateIdentifier, LoadInfo2 loadInfo) {
         super(aggregateIdentifier);
         this.loadInfo = loadInfo;
     }
