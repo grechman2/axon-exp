@@ -1,16 +1,37 @@
 version: '2.1'
 services:
-  axon-server:
-    image: axoniq/axonserver
-    container_name: axonserver
-    healthcheck:
-      test: "curl -f 'http://localhost:8024/actuator/health'"
-    ports:
-      - 8024:8024
-      - 8124:8124
+#  axon-server:
+#    image: axoniq/axonserver
+#    container_name: axonserver
+#    healthcheck:
+#      test: "curl -f 'http://localhost:8024/actuator/health'"
+#    ports:
+#      - 8024:8024
+#      - 8124:8124
   redis:
     image: sameersbn/redis
     ports:
       - "6379:6379"
     volumes:
       - /srv/docker/redis:/var/lib/redis
+
+  pulsar-standalone:
+    image: apachepulsar/pulsar
+    expose:
+      - 8080
+      - 6650
+    environment:
+      - PULSAR_MEM=" -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/standalone.conf
+      && bin/pulsar standalone"
+
+  dashboard:
+      image: apachepulsar/pulsar-dashboard
+      depends_on:
+        - pulsar-standalone
+      ports:
+        - "80:80"
+      environment:
+        - SERVICE_URL=http://standalone:8080
